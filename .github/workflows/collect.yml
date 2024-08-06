@@ -187,8 +187,7 @@ jobs:
           tag_name: ${{ needs.Date.outputs.Date }}
           make_latest: true
           files: |
-            ${{ vars.COLLECTOR }}-${{ needs.Date.outputs.Date }}.bundle
-            ${{ vars.COLLECTOR }}-${{ needs.Date.outputs.Date }}.tgz
+            ${{ vars.COLLECTOR }}-${{ needs.Date.outputs.Date }}.*
 
   Sharepoint:
     runs-on: ubuntu-latest
