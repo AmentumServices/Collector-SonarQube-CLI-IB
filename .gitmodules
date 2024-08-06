@@ -1,0 +1,3 @@
+[submodule "sonar-scanner-cli"]
+	path = sonar-scanner-cli
+	url = https://repo1.dso.mil/dsop/sonarsource/sonar-scanner-cli.git

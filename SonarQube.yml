@@ -1,0 +1,6 @@
+registry1.dso.mil:
+    images-by-tag-regex:
+        ironbank/sonarsource/sonar-scanner-cli: (^11.?)|(latest)
+docker.io:
+    images-by-tag-regex:
+        sonarsource/sonar-scanner-cli: (^11.?)|(latest)
