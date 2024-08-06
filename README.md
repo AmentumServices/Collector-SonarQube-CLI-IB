@@ -1,6 +1,6 @@
 # What is this?
 
-[![Release](https://github.com/jacobsfederal/Collector-SonarQube-IB/actions/workflows/collect.yml/badge.svg?branch=main)](https://github.com/JacobsFederal/Collector-SonarQube-IB/actions/workflows/collect.yml)
+[![Release](https://github.com/jacobsfederal/Collector-SonarQube-CLI-IB/actions/workflows/collect.yml/badge.svg?branch=main)](https://github.com/JacobsFederal/Collector-SonarQube-CLI-IB/actions/workflows/collect.yml)
 
 This is a project that automatically collects artifacts to ease in air-gapped transfer from the internet.
 
