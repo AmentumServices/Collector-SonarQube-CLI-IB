@@ -109,10 +109,19 @@ jobs:
       - name: Show Artifacts
         run: ls -alh ${{ vars.COLLECTOR }}-*.*
 
-      - name: Download Bamboo Plugin
+      # - name: Download Bamboo Plugin
+      #   run: |
+      #     wget -nv -O sonarqube-bamboo-plugin.jar \
+      #       https://marketplace.atlassian.com/download/apps/1212756/
+
+      - name: Download SonarScannerCLI Binaries
         run: |
-          wget -nv -O sonarqube-bamboo-plugin.jar \
-            https://marketplace.atlassian.com/download/apps/1212756/
+          echo -e "\nDownloading binaries\n"
+          mkdir binaries
+          cd binaries
+          wget -nv https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-6.1.0.4477-linux-x64.zip
+          wget -nv https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-6.1.0.4477-windows-x64.zip
+          wget -nv https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-6.1.0.4477.zip
 
       - name: Make ISO
         run: |
@@ -120,7 +129,7 @@ jobs:
             -V '${{ vars.COLLECTOR }}-${{ needs.Date.outputs.Date }}' \
             -A '${{ vars.COLLECTOR }}-${{ needs.Date.outputs.Date }}' \
             -o ${{ vars.COLLECTOR }}-${{ needs.Date.outputs.Date }}.iso \
-            ${{ vars.COLLECTOR }}-*.* sonarqube-bamboo-plugin.jar README.md
+            ${{ vars.COLLECTOR }}-*.* sonarqube-bamboo-plugin.jar README.md binaries
 
       - name: Implant MD5 sum into iso
         run: implantisomd5 ${{ vars.COLLECTOR }}-${{ needs.Date.outputs.Date }}.iso
