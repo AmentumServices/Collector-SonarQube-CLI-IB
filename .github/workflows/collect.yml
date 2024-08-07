@@ -105,6 +105,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           merge-multiple: true
+          path: ISO
 
       - name: Show Artifacts
         run: ls -alh ${{ vars.COLLECTOR }}-*.*
@@ -117,11 +118,14 @@ jobs:
       - name: Download SonarScannerCLI Binaries
         run: |
           echo -e "\nDownloading binaries\n"
-          mkdir binaries
-          cd binaries
+          mkdir -p ISO/binaries
+          cd ISO/binaries
           wget -nv https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-6.1.0.4477-linux-x64.zip
           wget -nv https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-6.1.0.4477-windows-x64.zip
           wget -nv https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-6.1.0.4477.zip
+
+      - name: Copy Markdowns to ISO
+        run: cp -v *.md ISO/
 
       - name: Make ISO
         run: |
@@ -129,7 +133,7 @@ jobs:
             -V '${{ vars.COLLECTOR }}-${{ needs.Date.outputs.Date }}' \
             -A '${{ vars.COLLECTOR }}-${{ needs.Date.outputs.Date }}' \
             -o ${{ vars.COLLECTOR }}-${{ needs.Date.outputs.Date }}.iso \
-            ${{ vars.COLLECTOR }}-*.* README.md binaries
+            ISO
 
       - name: Implant MD5 sum into iso
         run: implantisomd5 ${{ vars.COLLECTOR }}-${{ needs.Date.outputs.Date }}.iso
