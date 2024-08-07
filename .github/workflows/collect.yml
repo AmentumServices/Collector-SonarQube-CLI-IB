@@ -108,7 +108,7 @@ jobs:
           path: ISO
 
       - name: Show Artifacts
-        run: ls -alh ${{ vars.COLLECTOR }}-*.*
+        run: ls -alh ISO/${{ vars.COLLECTOR }}-*.*
 
       # - name: Download Bamboo Plugin
       #   run: |
