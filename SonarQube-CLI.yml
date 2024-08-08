@@ -4,3 +4,4 @@ registry1.dso.mil:
 docker.io:
     images-by-tag-regex:
         sonarsource/sonar-scanner-cli: (^11.?)|(latest)
+        chainguard/sonar-scanner-cli: (latest)
