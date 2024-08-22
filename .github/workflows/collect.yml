@@ -49,9 +49,9 @@ jobs:
 
       - name: TARchive Skopeo Output
         run: |
-          tar -cvz  --remove-files \
+          tar -cvz --remove-files \
             -f ${{ vars.COLLECTOR }}-${{ needs.Date.outputs.Date }}.tgz ${{ vars.COLLECTOR }}
-          ls -alh ${{ vars.COLLECTOR }}-${{ needs.Date.outputs.Date }}.tgz
+          ls -Alh ${{ vars.COLLECTOR }}-${{ needs.Date.outputs.Date }}.tgz
 
       - name: Upload TARchive
         uses: actions/upload-artifact@v4
@@ -108,7 +108,19 @@ jobs:
           path: ISO
 
       - name: Show Artifacts
-        run: ls -alh ISO/${{ vars.COLLECTOR }}-*.*
+        run: ls -Alh ISO/${{ vars.COLLECTOR }}-*.*
+
+      - name: Generate Artifact Hash File
+        run: |
+          sha256sum -b ${{ vars.COLLECTOR }}-${{ needs.Date.outputs.Date }}* >>\
+            ${{ vars.COLLECTOR }}-${{ needs.Date.outputs.Date }}.sha
+          cat ${{ vars.COLLECTOR }}-${{ needs.Date.outputs.Date }}.sha
+
+      - name: Upload Artifact Hash File
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ vars.COLLECTOR }}-${{ needs.Date.outputs.Date }}.sha
+          path: ${{ vars.COLLECTOR }}-${{ needs.Date.outputs.Date }}.sha
 
       - name: Download SonarScannerCLI Binaries
         run: |
@@ -133,7 +145,7 @@ jobs:
       - name: Implant MD5 sum into iso
         run: implantisomd5 ${{ vars.COLLECTOR }}-${{ needs.Date.outputs.Date }}.iso
 
-      - name: Generate Hash
+      - name: Generate ISO Hash
         run: |
           sha256sum -b ${{ vars.COLLECTOR }}-${{ needs.Date.outputs.Date }}.iso >>\
             ${{ vars.COLLECTOR }}-${{ needs.Date.outputs.Date }}.iso.sha
@@ -149,7 +161,7 @@ jobs:
           path: ${{ vars.COLLECTOR }}-${{ needs.Date.outputs.Date }}.iso
           if-no-files-found: error
 
-      - name: Upload ISO SHA
+      - name: Upload ISO Hash
         uses: actions/upload-artifact@v4
         with:
           name: ${{ vars.COLLECTOR }}-${{ needs.Date.outputs.Date }}.iso.sha
@@ -195,7 +207,7 @@ jobs:
           tag_name: ${{ needs.Date.outputs.Date }}
           make_latest: true
           files: |
-            ${{ vars.COLLECTOR }}-${{ needs.Date.outputs.Date }}.*
+            ${{ vars.COLLECTOR }}-${{ needs.Date.outputs.Date }}*.*
 
   Sharepoint:
     runs-on: ubuntu-latest
@@ -210,7 +222,7 @@ jobs:
           merge-multiple: true
 
       - name: Show Artifacts
-        run: ls -alh ${{ vars.COLLECTOR }}-*.*
+        run: ls -Alh ${{ vars.COLLECTOR }}-*.*
 
       - name: Send Files to Sharepoint
         uses: JacobsFederal/sharepoint-file-upload-action@pappasjfed-patch-1
