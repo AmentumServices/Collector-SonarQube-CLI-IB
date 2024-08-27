@@ -1,7 +1,7 @@
 registry1.dso.mil:
     images-by-tag-regex:
-        ironbank/sonarsource/sonar-scanner-cli: (^11.?)|(latest)
+        ironbank/sonarsource/sonar-scanner-cli: (^11.?$)|(^latest$)
 docker.io:
     images-by-tag-regex:
-        sonarsource/sonar-scanner-cli: (^11.?)|(latest)
-        chainguard/sonar-scanner-cli: (latest)
+        sonarsource/sonar-scanner-cli: (^11.?$)|(^latest$)
+        chainguard/sonar-scanner-cli: (^latest$)
