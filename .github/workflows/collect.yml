@@ -107,21 +107,6 @@ jobs:
           merge-multiple: true
           path: ISO
 
-      - name: Show Artifacts
-        run: ls -Alh ISO/${{ vars.COLLECTOR }}-*.*
-
-      - name: Generate Artifact Hash File
-        run: |
-          sha256sum -b ISO/${{ vars.COLLECTOR }}-${{ needs.Date.outputs.Date }}* >>\
-            ISO/${{ vars.COLLECTOR }}-${{ needs.Date.outputs.Date }}.sha
-          cat ISO/${{ vars.COLLECTOR }}-${{ needs.Date.outputs.Date }}.sha
-
-      - name: Upload Artifact Hash File
-        uses: actions/upload-artifact@v4
-        with:
-          name: ${{ vars.COLLECTOR }}-${{ needs.Date.outputs.Date }}.sha
-          path: ${{ vars.COLLECTOR }}-${{ needs.Date.outputs.Date }}.sha
-
       - name: Download SonarScannerCLI Binaries
         run: |
           echo -e "\nDownloading binaries\n"
@@ -133,6 +118,23 @@ jobs:
 
       - name: Copy Markdowns to ISO
         run: cp -v *.md ISO/
+        
+      - name: Show Artifacts
+        run: ls -Alh ISO/${{ vars.COLLECTOR }}-*.*
+
+      - name: Generate Artifact Hash File
+        run: |
+          cd ISO
+          sha256sum -b * >>\
+            ${{ vars.COLLECTOR }}-${{ needs.Date.outputs.Date }}.sha
+          cat ${{ vars.COLLECTOR }}-${{ needs.Date.outputs.Date }}.sha
+
+      - name: Upload Artifact Hash File
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ vars.COLLECTOR }}-${{ needs.Date.outputs.Date }}.sha
+          path: ISO/${{ vars.COLLECTOR }}-${{ needs.Date.outputs.Date }}.sha
+
 
       - name: Make ISO
         run: |
