@@ -116,6 +116,11 @@ jobs:
           wget -nv https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-6.1.0.4477-windows-x64.zip
           wget -nv https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-6.1.0.4477.zip
 
+      - name: Generate Artifact Hash File
+        run: |
+          cd ISO/binaries
+          sha256sum -b * | tee sonar-scanner-cli-6.1.0.4477.sha
+
       - name: Copy Markdowns to ISO
         run: cp -v *.md ISO/
 
@@ -125,7 +130,7 @@ jobs:
       - name: Generate Artifact Hash File
         run: |
           cd ISO
-          sha256sum -b ${{ vars.COLLECTOR }}-${{ needs.Date.outputs.Date }}* >>\
+          sha256sum -b ${{ vars.COLLECTOR }}-${{ needs.Date.outputs.Date }}* | tee
             ${{ vars.COLLECTOR }}-${{ needs.Date.outputs.Date }}.sha
           cat ${{ vars.COLLECTOR }}-${{ needs.Date.outputs.Date }}.sha
 
